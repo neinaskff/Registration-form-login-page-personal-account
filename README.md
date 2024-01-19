@@ -4,6 +4,10 @@
 
 ### Features
 
+Creation of the registration page:
+- A page was created using the Figma design mockup.
+- JavaScript and CSS files were connected to the page.
+
 # 💻 Registration Page:
 
  >  Modified form validation code with the following requirements:
@@ -47,7 +51,33 @@ To simulate entering the personal account:
 * *Change the text on the "Sign In" button to "Exit" and modify its listener to reload the page, simulating a logout simply.*
 * *Remove all other elements, including text under the header, Username and Password fields, and the "Registration" link.*
 
+# ➕ Additional Details:
 
+### Fonts:
+All fonts are connected to the website according to the design mockup.
+
+### JavaScript:
+
+1. An event handler for the full page load was created.
+2. Input of numbers is prohibited in the "Full Name" field.
+3. Input of dots and commas is prohibited in the "Your username" field.
+4. A corresponding message is logged to the console when the checkbox value is changed.
+5. Checks on pressing the "Sign Up" button include:
+- *Verification of a value in each text field.*
+- *Password length check (minimum 8 characters).*
+- *Confirmation of matching passwords in the two text fields.*
+- *Verification of checkbox selection.*
+6. Handling successful registration:
+- *If all checks are successful, a popup appears with a message and an "OK" button.*
+- *Clicking the "OK" button closes the window, clears the form, and redirects the user to the login page.*
+7. Imitating a transition to the login page:
+- *The text "Get your free account" is replaced with "Log in to the system."*
+- *Blocks with the "Full Name," "E-mail," and "Repeat Password" fields are removed.*
+- *The checkbox block is also removed.*
+- *The text in the button is changed to "Sign In."*
+- *The "Already have an account-?" link is removed.*
+- *The event listener for the "Sign In" button is updated to check only if both fields (Username and Password) are filled.*
+8. Upon successful completion, a message is displayed via alert: "Welcome, username!".
 
 # 🗒  Note:
 
