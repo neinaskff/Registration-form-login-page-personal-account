@@ -95,7 +95,7 @@ body {
 
 }
 
-input[type="checkbox"] + span {
+input[type="checkbox"]+span {
     align-items: center;
     color: #636363;
     font-size: 16px;
@@ -110,7 +110,8 @@ input[type="checkbox"] + span {
 
 }
 
-.button-left, .link {
+.button-left,
+.link {
     text-align: center;
 }
 
@@ -147,7 +148,7 @@ input[type="checkbox"] + span {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     display: none;
     justify-content: center;
     align-items: center;
@@ -158,7 +159,7 @@ input[type="checkbox"] + span {
     background: #fff;
     padding: 20px;
     border-radius: 30px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     text-align: center;
 }
 
@@ -183,4 +184,8 @@ input[type="checkbox"] + span {
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
+}
+
+.error-message {
+    display: none;
 }

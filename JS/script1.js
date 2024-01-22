@@ -4,7 +4,17 @@ window.onload = (event) => {
 
     const form = document.getElementById('form');
     const allInputs = form.querySelectorAll('input');
-    const errorBlocks = form.querySelectorAll('.error-message')
+    const errorBlocks = form.querySelectorAll('.error-message');
+    const fullName = document.getElementById('full-name');
+
+
+    document.querySelector('.full-name').addEventListener('input', function () {
+        this.value = this.value.replace(/[^a-zA-Z ]/g, '');
+    })
+
+    document.querySelector('.username').addEventListener('input', function () {
+        this.value = this.value.replace(/[^a-zA-Z0-9_-]/g, '')
+    })
 
 
     form.addEventListener('submit', function (event) {
@@ -33,6 +43,8 @@ window.onload = (event) => {
                 }
             })
         })
+
+
 
     })
 }
