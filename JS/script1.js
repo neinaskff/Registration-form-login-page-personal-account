@@ -5,7 +5,9 @@ window.onload = (event) => {
     const form = document.getElementById('form');
     const allInputs = form.querySelectorAll('input');
     const errorBlocks = form.querySelectorAll('.error-message');
-    const fullName = document.getElementById('full-name');
+    const password = document.getElementById('password');
+    const rPassword = document.getElementById('r-password');
+
 
 
     document.querySelector('.full-name').addEventListener('input', function () {
@@ -20,17 +22,26 @@ window.onload = (event) => {
     form.addEventListener('submit', function (event) {
         event.preventDefault();
 
+        errorBlocks.forEach((items) => {
+            items.style.display = 'none';
+            items.style.color = 'transparent';
+            items.style.marginTop = '0';
+            items.innerText = items.innerText + '';
+
+        })
+
         console.log('allInputs', allInputs)
 
         allInputs.forEach(function (input) {
             errorBlocks.forEach(function (errorsSpan) {
+                if (input.classList.value === 'checkbox') {
+                    if (!input.checked) {
+                        document.querySelector('.spanCheckbox').style.color = 'red';
+                    }
+                }
                 if (input.value === '') {
-
                     if (errorsSpan.classList[1] === input.id) {
-                        errorsSpan.style.display = 'block';
-                        errorsSpan.style.color = 'red';
-                        errorsSpan.style.marginTop = '10px';
-                        input.style.borderBottom = '1px solid red';
+                        invalidInput(input, errorsSpan);
                         errorsSpan.innerText = errorsSpan.innerText + ' ' + input.name;
                     }
                 } else {
@@ -40,11 +51,67 @@ window.onload = (event) => {
                         errorsSpan.style.marginTop = '0';
                         input.style.borderBottom = '1px solid #C6C6C4';
                     }
+                    if (input.classList.value === 'password') {
+                        if (input.value.length < 8) {
+                            if (errorsSpan.classList[1] === input.id) {
+                                invalidInput(input, errorsSpan);
+                                errorsSpan.innerText = input.name + ' ' + "должен содержать минимум 8 символов";
+
+                            }
+                        }
+                        const hasUpperCase = /[A-Z]/.test(input.value);
+                        const hasDigit = /\d/.test(input.value);
+                        const hasSpecialChar = /[!@#$%^&*()_+]/.test(input.value);
+                        if (!hasUpperCase) {
+                            if (errorsSpan.classList[1] === input.id) {
+                                invalidInput(input, errorsSpan);
+                                errorsSpan.innerText = input.name + ' ' + "должен содержать хотя бы однy буквy в верхнем регистре";
+
+                            }
+                        }
+                        if (!hasDigit) {
+                            if (errorsSpan.classList[1] === input.id) {
+                                invalidInput(input, errorsSpan);
+                                errorsSpan.innerText = input.name + ' ' + "должен содержать хотя бы однy цифрy";
+
+                            }
+                        }
+                        if (!hasSpecialChar) {
+                            if (errorsSpan.classList[1] === input.id) {
+                                invalidInput(input, errorsSpan);
+                                errorsSpan.innerText = input.name + ' ' + "должен содержать хотя бы один спецсимвол";
+
+                            }
+                        }
+
+                    }
+                    if (password.value !== rPassword.value) {
+                        if (input.classList.value === 'r-password') {
+                            if (errorsSpan.classList[1] === input.id) {
+                                invalidInput(input, errorsSpan);
+                                errorsSpan.innerText = 'Пароли не совпадают';
+                            }
+                        }
+
+                    }
+
                 }
+
             })
         })
 
 
 
     })
+    function invalidInput(inputBlock, errorBlock) {
+        document.querySelector('.spanCheckbox').style.color = 'inherit';
+        errorBlock.style.display = 'block';
+        errorBlock.style.color = 'red';
+        errorBlock.style.marginTop = '10px';
+        inputBlock.style.borderBottom = '1px solid red';
+    }
 }
+
+
+
+
