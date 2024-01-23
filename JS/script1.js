@@ -1,125 +1,148 @@
 window.onload = (event) => {
+    const form = document.getElementById("form");
+    const fullName = document.getElementById("full-name");
+    const username = document.getElementById("username");
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const confirmpassword = document.getElementById("r-password");
+    const checkBox = document.getElementById("checkbox");
 
-    console.log('page loaded')
+    //! Event listeners for real-time input validation
+    fullName.addEventListener("input", validateFullName);
+    username.addEventListener("input", validateUsername);
+    email.addEventListener("input", validateEmail);
+    password.addEventListener("input", validatePassword);
+    confirmpassword.addEventListener("input", validateConfirmPassword);
+    checkBox.addEventListener("checked", validateCheckBox);
 
-    const form = document.getElementById('form');
-    const allInputs = form.querySelectorAll('input');
-    const errorBlocks = form.querySelectorAll('.error-message');
-    const password = document.getElementById('password');
-    const rPassword = document.getElementById('r-password');
+    //! Event listener for form submission
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
 
+        if (
+            validateFullName() &&
+            validateUsername() &&
+            validateEmail() &&
+            validatePassword() &&
+            validateConfirmPassword() && validateCheckBox()
+        ) {
+            submittedForm();
+        }
+    });
 
-
-    document.querySelector('.full-name').addEventListener('input', function () {
-        this.value = this.value.replace(/[^a-zA-Z ]/g, '');
-    })
-
-    document.querySelector('.username').addEventListener('input', function () {
-        this.value = this.value.replace(/[^a-zA-Z0-9_-]/g, '')
-    })
-
-
-    form.addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        errorBlocks.forEach((items) => {
-            items.style.display = 'none';
-            items.style.color = 'transparent';
-            items.style.marginTop = '0';
-            items.innerText = items.innerText + '';
-
-        })
-
-        console.log('allInputs', allInputs)
-
-        allInputs.forEach(function (input) {
-            errorBlocks.forEach(function (errorsSpan) {
-                if (input.classList.value === 'checkbox') {
-                    if (!input.checked) {
-                        document.querySelector('.spanCheckbox').style.color = 'red';
-                    }
-                }
-                if (input.value === '') {
-                    if (errorsSpan.classList[1] === input.id) {
-                        invalidInput(input, errorsSpan);
-                        errorsSpan.innerText = errorsSpan.innerText + ' ' + input.name;
-                    }
-                } else {
-                    if (errorsSpan.classList[1] === input.id) {
-                        errorsSpan.style.display = 'none';
-                        errorsSpan.style.color = 'transparent';
-                        errorsSpan.style.marginTop = '0';
-                        input.style.borderBottom = '1px solid #C6C6C4';
-                    }
-                    if (input.classList.value === 'password') {
-                        if (input.value.length < 8) {
-                            if (errorsSpan.classList[1] === input.id) {
-                                invalidInput(input, errorsSpan);
-                                errorsSpan.innerText = input.name + ' ' + "must contain a minimum of 8 characters";
-
-                            }
-                        }
-                        const hasUpperCase = /[A-Z]/.test(input.value);
-                        const hasDigit = /\d/.test(input.value);
-                        const hasSpecialChar = /[!@#$%^&*()_+]/.test(input.value);
-                        if (!hasUpperCase) {
-                            if (errorsSpan.classList[1] === input.id) {
-                                invalidInput(input, errorsSpan);
-                                errorsSpan.innerText = input.name + ' ' + "must contain at least one uppercase letter";
-
-                            }
-                        }
-                        if (!hasDigit) {
-                            if (errorsSpan.classList[1] === input.id) {
-                                invalidInput(input, errorsSpan);
-                                errorsSpan.innerText = input.name + ' ' + "must contain at least one digit";
-
-                            }
-                        }
-                        if (!hasSpecialChar) {
-                            if (errorsSpan.classList[1] === input.id) {
-                                invalidInput(input, errorsSpan);
-                                errorsSpan.innerText = input.name + ' ' + "must contain at least one special character";
-
-                            }
-                        }
-
-                    }
-                    if (password.value !== rPassword.value) {
-                        if (input.classList.value === 'r-password') {
-                            if (errorsSpan.classList[1] === input.id) {
-                                invalidInput(input, errorsSpan);
-                                errorsSpan.innerText = 'The passwords do not match.';
-                            }
-                        }
-
-                    }
-
-                }
-
-                let modalOverlay = document.querySelector('.modal-overlay');
-                showModal(modalOverlay);
-
-
-            })
-        })
-
-
-
-    })
-    function invalidInput(inputBlock, errorBlock) {
-        document.querySelector('.spanCheckbox').style.color = 'inherit';
-        errorBlock.style.display = 'block';
-        errorBlock.style.color = 'red';
-        errorBlock.style.marginTop = '10px';
-        inputBlock.style.borderBottom = '1px solid red';
+    //! Validation functions
+    function validateFullName() {
+        const fullNameValue = fullName.value.trim();
+        if (fullNameValue === "") {
+            setErrorFor(fullName, "Full name cannot be blank");
+            return false;
+        } else {
+            setSuccessFor(fullName);
+            return true;
+        }
     }
 
-    function showModal(modal) {
-        modal.style.display = 'block';
+    function validateUsername() {
+        const usernameValue = username.value.trim();
+        if (usernameValue === "") {
+            setErrorFor(username, "Username cannot be blank");
+            return false;
+        } else {
+            setSuccessFor(username);
+            return true;
+        }
     }
+
+    function validateEmail() {
+        const emailValue = email.value.trim();
+        if (emailValue === "") {
+            setErrorFor(email, "Email cannot be blank");
+            return false;
+        } else if (!isEmail(emailValue)) {
+            setErrorFor(email, "Email is not valid");
+            return false;
+        } else {
+            setSuccessFor(email);
+            return true;
+        }
+    }
+
+    function validatePassword() {
+        const passwordValue = password.value.trim();
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+        if (passwordValue === "") {
+            setErrorFor(password, "Password cannot be blank");
+            return false;
+        } else if (!passwordRegex.test(passwordValue)) {
+            setErrorFor(password, "Password must contain at least 8 characters with at least one uppercase letter, one digit, and one special character (@$!%*?&)");
+            return false;
+        } else {
+            setSuccessFor(password);
+            return true;
+        }
+    }
+
+    function validateConfirmPassword() {
+        const passwordValue = password.value.trim();
+        const confirmpasswordValue = confirmpassword.value.trim();
+        if (confirmpasswordValue === "") {
+            setErrorFor(confirmpassword, "Confirm Password cannot be blank");
+            return false;
+        } else if (passwordValue !== confirmpasswordValue) {
+            setErrorFor(confirmpassword, "Password does not match!");
+            return false;
+        } else {
+            setSuccessFor(confirmpassword);
+            return true;
+        }
+    }
+
+    function validateCheckBox() {
+        if (!checkBox.checked) {
+            setErrorFor(checkBox, "You must agree to the terms and conditions");
+            return false;
+        } else {
+            setSuccessFor(checkBox);
+            return true;
+        }
+    }
+
+    //! Helper functions
+    function setErrorFor(input, message) {
+        const inputControl = input.parentElement;
+        const small = inputControl.querySelector("small");
+
+        small.innerText = message;
+        inputControl.classList.remove("success");
+        inputControl.classList.add("error");
+        inputControl.style.paddingBottom = "20px";
+        inputControl.style.marginBottom = "14px";
+    }
+
+    function setSuccessFor(input) {
+        const inputControl = input.parentElement;
+
+        inputControl.classList.remove("error");
+        inputControl.classList.add("success");
+        inputControl.style.paddingBottom = "0";
+        inputControl.style.marginBottom = "20px";
+    }
+
+    //! Checking email
+    function isEmail(email) {
+        return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email);
+    }
+
+    //! Showing the 'submitted' message
+    function submittedForm() {
+        showModal()
+    }
+
+    //! Show modal
+    function showModal() {
+        const modalOverlay = document.querySelector('.modal-overlay');
+        modalOverlay.style.display = 'block';
+    }
+
 }
-
-
-
-
