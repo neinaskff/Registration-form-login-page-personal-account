@@ -55,7 +55,7 @@ window.onload = (event) => {
                         if (input.value.length < 8) {
                             if (errorsSpan.classList[1] === input.id) {
                                 invalidInput(input, errorsSpan);
-                                errorsSpan.innerText = input.name + ' ' + "должен содержать минимум 8 символов";
+                                errorsSpan.innerText = input.name + ' ' + "must contain a minimum of 8 characters";
 
                             }
                         }
@@ -65,21 +65,21 @@ window.onload = (event) => {
                         if (!hasUpperCase) {
                             if (errorsSpan.classList[1] === input.id) {
                                 invalidInput(input, errorsSpan);
-                                errorsSpan.innerText = input.name + ' ' + "должен содержать хотя бы однy буквy в верхнем регистре";
+                                errorsSpan.innerText = input.name + ' ' + "must contain at least one uppercase letter";
 
                             }
                         }
                         if (!hasDigit) {
                             if (errorsSpan.classList[1] === input.id) {
                                 invalidInput(input, errorsSpan);
-                                errorsSpan.innerText = input.name + ' ' + "должен содержать хотя бы однy цифрy";
+                                errorsSpan.innerText = input.name + ' ' + "must contain at least one digit";
 
                             }
                         }
                         if (!hasSpecialChar) {
                             if (errorsSpan.classList[1] === input.id) {
                                 invalidInput(input, errorsSpan);
-                                errorsSpan.innerText = input.name + ' ' + "должен содержать хотя бы один спецсимвол";
+                                errorsSpan.innerText = input.name + ' ' + "must contain at least one special character";
 
                             }
                         }
@@ -89,13 +89,17 @@ window.onload = (event) => {
                         if (input.classList.value === 'r-password') {
                             if (errorsSpan.classList[1] === input.id) {
                                 invalidInput(input, errorsSpan);
-                                errorsSpan.innerText = 'Пароли не совпадают';
+                                errorsSpan.innerText = 'The passwords do not match.';
                             }
                         }
 
                     }
 
                 }
+
+                let modalOverlay = document.querySelector('.modal-overlay');
+                showModal(modalOverlay);
+
 
             })
         })
@@ -109,6 +113,10 @@ window.onload = (event) => {
         errorBlock.style.color = 'red';
         errorBlock.style.marginTop = '10px';
         inputBlock.style.borderBottom = '1px solid red';
+    }
+
+    function showModal(modal) {
+        modal.style.display = 'block';
     }
 }
 
