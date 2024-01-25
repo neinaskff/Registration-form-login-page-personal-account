@@ -6,6 +6,10 @@ window.onload = (event) => {
     const password = document.getElementById("password");
     const confirmpassword = document.getElementById("r-password");
     const checkBox = document.getElementById("checkbox");
+    const okButton = document.getElementById('ok-btn');
+    const modalOverlay = document.querySelector('.modal-overlay');
+
+
 
     //! Event listeners for real-time input validation
     fullName.addEventListener("input", validateFullName);
@@ -129,6 +133,15 @@ window.onload = (event) => {
         inputControl.style.marginBottom = "20px";
     }
 
+
+    function reDirect() {
+        window.location.href = 'log_in.html';
+    }
+
+    okButton.addEventListener('click', () => {
+        reDirect();
+    })
+
     //! Checking email
     function isEmail(email) {
         return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email);
@@ -137,12 +150,32 @@ window.onload = (event) => {
     //! Showing the 'submitted' message
     function submittedForm() {
         showModal()
+        setClients()
     }
 
     //! Show modal
     function showModal() {
-        const modalOverlay = document.querySelector('.modal-overlay');
         modalOverlay.style.display = 'block';
     }
 
+    const clients = [];
+
+
+    function setClients(event) {
+        const client = {
+            fullName: fullName.value,
+            username: username.value,
+            password: password.value
+        }
+        clients.push(client);
+        setUsersToLocalStorage(clients)
+    }
+
+    function setUsersToLocalStorage(clients) {
+        localStorage.setItem('users', JSON.stringify(clients))
+    }
+
 }
+
+
+// !1Qqqwertyuiop
