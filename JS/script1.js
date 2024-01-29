@@ -87,6 +87,18 @@ window.onload = (event) => {
         }
     }
 
+    function validateLogInPassword() {
+        const passwordValue = password.value.trim();
+
+        if (passwordValue === "") {
+            setErrorFor(password, "Password cannot be blank");
+            return false;
+        } else {
+            setSuccessFor(password);
+            return true;
+        }
+    }
+
     function validateConfirmPassword() {
         const passwordValue = password.value.trim();
         const confirmpasswordValue = confirmpassword.value.trim();
@@ -133,13 +145,8 @@ window.onload = (event) => {
         inputControl.style.marginBottom = "20px";
     }
 
-
-    function reDirect() {
-        window.location.href = 'log_in.html';
-    }
-
     okButton.addEventListener('click', () => {
-        reDirect();
+        createLogInPage()
     })
 
     //! Checking email
@@ -155,17 +162,24 @@ window.onload = (event) => {
 
     //! Show modal
     function showModal() {
-        modalOverlay.style.display = 'block';
+        modalOverlay.style.display = 'flex';
     }
 
-    const clients = [];
-
+    //! Hide modal
+    function hideModal() {
+        modalOverlay.style.display = 'none';
+    }
 
     function setClients(event) {
+        let clients = [];
+        const localStorageClients = localStorage.getItem('users');
         const client = {
             fullName: fullName.value,
             username: username.value,
             password: password.value
+        }
+        if (localStorageClients) {
+            clients = JSON.parse(localStorageClients);
         }
         clients.push(client);
         setUsersToLocalStorage(clients)
@@ -173,6 +187,79 @@ window.onload = (event) => {
 
     function setUsersToLocalStorage(clients) {
         localStorage.setItem('users', JSON.stringify(clients))
+    }
+
+    // Login page
+
+    const formLogIn = document.getElementById("singIn");
+    const usernameLogIn = formLogIn.querySelector("#username");
+    const passwordLogIn = formLogIn.querySelector("#password")
+
+    function createLogInPage() {
+        document.getElementsByClassName('registration')[0].style.display = 'none';
+        document.getElementsByClassName('sing-in')[0].style.display = 'flex';
+        hideModal()
+
+        //! Event listeners for real-time input validation
+        usernameLogIn.addEventListener("input", validateUsername);
+        passwordLogIn.addEventListener("input", validateLogInPassword);
+
+
+        formLogIn.addEventListener("submit", submitLogInForm)
+
+    }
+
+    function submitLogInForm(e) {
+        e.preventDefault();
+
+        if (
+            validateUsername() &&
+            validateLogInPassword()
+        ) {
+            submittedLogInForm();
+        }
+    }
+
+    function submittedLogInForm() {
+        const clients = JSON.parse(localStorage.getItem("users"))
+        const user = {
+            username: username.value,
+            password: password.value
+        }
+
+        clients.forEach(function (client) {
+            if (user.username !== client.username) {
+                setErrorFor(username, "Usermane is wrong");
+            } else if (user.password !== client.password) {
+                setErrorFor(password, "Password is wrong");
+            } else {
+                setSuccessFor(username, password);
+                doLogin(client)
+            }
+        })
+    }
+
+    function doLogin(client) {
+        const tittle = document.getElementById('tittle-sign-in');
+        tittle.textContent = 'Welcome, ' + client.fullName + "!";
+        const SingInBtn = document.getElementById('sign-in-btn');
+        SingInBtn.textContent = 'Exit';
+        SingInBtn.ariaDisabled = true;
+        const tittleText = document.getElementsByClassName('tittle-text')[1]
+        tittleText.remove();
+        const link = document.getElementsByClassName('link')[1]
+        link.remove();
+        formLogIn.removeEventListener('submit', submitLogInForm)
+        hideInput()
+    }
+
+
+    function hideInput() {
+        const Inputcontrol = document.querySelectorAll('.input-control')
+
+        Inputcontrol.forEach(function (div) {
+            div.style.display = 'none'
+        })
     }
 
 }
