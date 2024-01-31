@@ -128,7 +128,7 @@ input[type='checkbox']+span {
     margin-top: 254px;
 }
 
-.link a {
+.link {
     color: #636363;
     cursor: pointer;
     font-size: 16px;

@@ -31,6 +31,7 @@ window.onload = (event) => {
             validateConfirmPassword() && validateCheckBox()
         ) {
             submittedForm();
+            e.target.remove();
         }
     });
 
@@ -189,7 +190,25 @@ window.onload = (event) => {
         localStorage.setItem('users', JSON.stringify(clients))
     }
 
+    // Registration page
+
+    function createRegistrationPage() {
+        document.getElementsByClassName('registration')[0].style.display = 'flex';
+        document.getElementsByClassName('sing-in')[0].style.display = 'none';
+    }
+
     // Login page
+
+    const haveAnAccountBtn = document.querySelector('#logIn');
+    const registrationPageBtn = document.querySelector('#registration');
+
+    haveAnAccountBtn.addEventListener('click', function () {
+        createLogInPage();
+    })
+
+    registrationPageBtn.addEventListener('click', function () {
+        createRegistrationPage();
+    })
 
     const formLogIn = document.getElementById("singIn");
     const usernameLogIn = formLogIn.querySelector("#username");
@@ -204,9 +223,7 @@ window.onload = (event) => {
         usernameLogIn.addEventListener("input", validateUsername);
         passwordLogIn.addEventListener("input", validateLogInPassword);
 
-
         formLogIn.addEventListener("submit", submitLogInForm)
-
     }
 
     function submitLogInForm(e) {
