@@ -149,6 +149,10 @@ input[type='checkbox']+span {
     z-index: 9999;
 }
 
+.modal-active {
+    display: flex;
+}
+
 .modal {
     background: #fff;
     padding: 20px;
@@ -198,11 +202,7 @@ input[type='checkbox']+span {
 }
 
 small {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    font-weight: 800;
-    visibility: hidden;
+    color: red;
 }
 
 /* Login page */
